@@ -3,6 +3,10 @@
 
 成品請參考 → https://django-shopping-site.herokuapp.com/
 
+superuser
+帳號: nekosgr
+密碼: testpassword
+
 不過Heroku因為沒有上傳檔案的功能所以所有的圖片上傳算是殘廢了:P
 
 目前還沒有做完支付部分
