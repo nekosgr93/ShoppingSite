@@ -4,15 +4,19 @@ from django.http import HttpResponseRedirect
 from django.utils.text import slugify
 from products.models import Product
 from django.shortcuts import render
-
+from django.contrib.auth.models import User
 
 class Welcome(TemplateView):
     template_name = 'welcome.html'
 
 
+
 class Index(TemplateView):
     template_name = "index.html"
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = User.objects.all()
+        return context
 
 def product_query(request):
     ext_query_string = slugify(request.GET.get('query'))
