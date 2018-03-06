@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<h2>Your Order</h2>
+
+{% for order in order_list %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Order Date:</td>
+                        <td>Total:</td>
+                        <td>Shipping to:</td>
+                        <td>Order number: ########</td>
+                    </tr>
+                    <tr>
+                        <td>{{ order.created }}</td>
+                        <td>$ {{ order.cart.total }}</td>
+                        <td>{% if order.address %}
+                            {{ order.address.full_name }}
+                            {% else %}
+                            {{ order.shipping_full_name }}
+                            {% endif %}</td>
+                        <td><a href="#">Detail</a></td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <table class="col-md-9">
+                {% for item in order.cart.get_cart_items %}
+                    <tr>
+                        <td class="col-md-2">
+                            <div class="media">
+                                <a class="thumbnail pull-left" href="{{ item.product.get_absolute_url }}">
+                                    <img src="{% if item.product.image %}
+                                    {{ item.product.image.url }}
+                                    {% else %}
+                                    {% static 'image/no_product_image.jpg' %}
+                                    {% endif %}"
+                                    style="width: 108px; height: 108px;">
+                                </a><br>
+                            </div>
+                        </td>
+                        <td class="col-md-9">
+                            <div class="media-title" style="text-align: left;">
+                                <h4><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></h4>
+                                <p>by {{ item.product.user }}</p>
+                                <p>$ {{ item.price }}</p>
+                            </div>
+                        </td>
+                        <td class="col-md-1">
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+                <div class="col-md-3">
+                    <a class="btn btn-warning" href="#" role="button">Package Tracking</a><br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% empty %}
+<h1>No Order</h1>
+{% endfor %}
+{% endblock %}

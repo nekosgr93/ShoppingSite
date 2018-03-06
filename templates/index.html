@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>This is a shopping page</h1>
+    <a href="{% url 'products:product_list'  username='aaa' %}">aaa Products</a><br>
+    <a href="{% url 'products:product_list'  username='nekosgr' %}">nekosgr Products</a>
+{% endblock %}

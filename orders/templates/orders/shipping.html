@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Choose Shipping</h1>
+<div class="row">
+    {% for address in user_address %}
+    <div class="col-xs-6 col-md-4">
+        <form method="POST" action="{% url 'orders:shipping' %}">
+            {% csrf_token %}
+            <address>
+                <strong>{{ address.full_name }}</strong><br>
+                {{ address.postal_code }}<br>
+                {{ address.address1 }}<br>
+                {{ address.address2 }}<br>
+                {{ address.country }}<br>
+                {{ address.phone_number }}<br>
+            </address>
+            <input name="address_id" type="hidden" value="{{ address.id }}">
+            <input name="use" type="submit" value="Ship to this address">
+        </form>
+    </div>
+    {% empty %}
+    <h2>You haven't add any address</h2>
+    {% endfor %}
+</div>
+<hr><br>
+<h1>Ship to a new address?</h1>
+<form method="POST" action="{% url 'orders:shipping' %}">
+    {% csrf_token %}
+    {{ new_shipping_address_form.as_p }}
+    <input name="save" type="submit" value="Ship to this address">
+</form>
+{% endblock %}

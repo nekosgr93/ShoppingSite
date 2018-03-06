@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    {% if user.is_authenticated and product_user == request.user %}
+    <h1><a class="btn btn-default" href="{% url 'products:create_product'%}">Add Product</a></h1>
+    {% endif %}
+    {% for product in product %}
+    <div class="col-xs-6 col-md-4">
+        <a href="{{ product.get_absolute_url }}" class="thumbnail">
+        <img src="{% if product.image %}
+                  {{ product.image.url }}
+                  {% else %}
+                  {% static 'image/no_product_image.jpg' %}
+                  {% endif %}"
+                  style="width: 180px; height: 171px;">
+        </a>
+        <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+        <p>by {{product.user.username}}</p>
+        <h4 style="color:#AA0000;">$ {{ product.price }}</h4>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

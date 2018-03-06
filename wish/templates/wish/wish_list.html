@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% block content %}
+<h1>Wish List</h1>
+<hr>
+<div class="row">
+    {% for product in wish_list %}
+    <table class="col-md-8">
+        <tr>
+            <td class="col-md-2">
+                <div class="media">
+                    <a class="thumbnail pull-left" href="{{ product.get_absolute_url }}">
+                        <img src="{% if product.image %}
+                        {{ product.image.url }}
+                        {% else %}
+                        {% static 'image/no_product_image.jpg' %}
+                        {% endif %}"
+                        style="width: 108px; height: 108px;">
+                    </a><br>
+                </div>
+            </td>
+            <td class="col-md-9">
+                <div class="media-title" style="text-align: left;">
+                    <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+
+                    <div style="color:#FFC408">
+                        {% for star in product.star_rating_list %}
+                            {% if star == 'on' %}
+                            <span class="fas fa-star"></span>
+                            {% else %}
+                            <span class="far fa-star"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <p>by {{ product.user }}</p>
+                    <p>$ {{ product.price }}</p>
+                    <hr>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+    <div class="col-md-2">
+        {% if product.in_stock %}
+        <form name="add_to_cart" action="{% url 'carts:add' product_id=product.id %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-product">
+                    <span class="glyphicon glyphicon-shopping-cart"></span> Add to cart
+                </button>
+            {% endbuttons %}
+        </form>
+        {% else %}
+        <p style="color:#AA0000;">The Product is out of stock</p>
+        {% endif %}
+    </div>
+    <div class="col-md-2">
+        <a class="btn" href="{% url 'wish:delete' product_id=product.id %}" style="background-color:#CB4042"><span class="fas fa-times" style="color:#FFFFFB"></span></a>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en">
+<head>
+
+
+    <meta charset="UTF-8">
+    <title></title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+
+
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand|Ubuntu" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/star_rating.css' %}">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <nav class="navbar navbar-custom">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a class="brandfont" href="{% url 'index' %}"><span class="fas fa-compass"></span> e-Shopping</a></li>
+
+            </ul>
+
+            <form class="navbar-form navbar-left" id="query_form" action="{% url 'query' %}" method="GET">
+
+                <div class="form-group query">
+                    <input type="text" class="form-control" placeholder="Search" id="query_text" name="query">
+                    <button type="submit" class="btn btn-search navbar-right" id="query_button">
+                        <span class="fas fa-search"></span>
+                    </button>
+                </div>
+            </form>
+
+
+            <ul class="nav navbar-nav navbar-right rightbar">
+                <li><a href="{% url 'carts:cart_detail' %}" class="rightbar"><span class="glyphicon glyphicon-shopping-cart"></span> cart</a></li>
+
+
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'orders:order_list' %}" class="rightbar"><span class="glyphicon glyphicon-list-alt"></span> order</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle rightbar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Hello, {{ user.username }}
+
+                        {% if user.userprofiles.profile_pic %}
+                            <img src="{{ user.userprofiles.profile_pic.url }}" alt="No Photo" style="width: 30px; height: 30px; border-radius: 25px;">
+                        {% else %}
+                            <img src="{% static 'accounts/images/default_profile.png' %}" style="width: 30px; height: 30px; border-radius: 25px;">
+                        {% endif %}
+
+
+
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                        <li class="dropdown-header"><h4><strong>Your account</strong></h4></li>
+                        <li><a href="{% url 'accounts:profiles' username=user.username %}">Your Profiles</a></li>
+                        <li><a href="{% url 'products:product_list'  username=user.username %}">Your Products</a></li>
+                        <li><a href="{% url 'orders:order_list' %}">Your Order</a></li>
+                        <li><a href="{% url 'wish:wish_list' %}">Your Wish List</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'accounts:logout' %}">log out</a></li>
+                    </ul>
+
+                </li>
+                {% else %}
+
+
+                <li><a href="{% url 'accounts:login' %}" class="rightbar"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>
+                <li><a href="{% url 'accounts:signup' %}" class="rightbar"><span class="glyphicon glyphicon-registration-mark"></span> Sing up</a></li>
+                {% endif %}
+
+
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+
+            <div class="blockone">
+                {% block left %}
+                {% endblock %}
+            </div>
+            <div class="blocktwo">
+                {% block right %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static 'js/star_rating.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<div class="col-md-2">
+                    <p>Order Date:</p>
+                    <p>{{ item.created }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p>Total:</p>
+                    <p>{{ item.cart.total }}</p>
+                </div>
+                <div class="col-md-5">
+                    <p>Shipping to:</p>
+                    {% if item.address %}
+                    <p>{{ item.address.full_name }}</p>
+                    {% else %}
+                    <p>{{ item.shipping_full_name }}</p>
+                    {% end %}
+                </div>
+                <div class="col-md-3">
+                    <p>Order number: #######</p>
+                    <a href="#">Detail</a>
+                </div>

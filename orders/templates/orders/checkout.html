@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Checkout</h1>
+<form action="{% url 'orders:checkout' %}" method="POST">
+    {% csrf_token %}
+    <input class="btn btn-warning" value="checkout" type="submit">
+    <a href="{% url 'carts:cart_detail' %}">Cancel</a>
+</form>
+{% endblock %}

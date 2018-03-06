@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="jumbotron">
+        <h1>Are you sure you want to Delete the Address?</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Confirm" class="btn btn-danger">
+            <a href="{% url 'accounts:user_address' username=user.username %}" class="btn btn-simple btn-large btn-default">Cancel</a>
+
+        </form>
+
+    </div>
+{% endblock %}

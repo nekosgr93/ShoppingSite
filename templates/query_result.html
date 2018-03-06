@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+    {% for product in query_result %}
+    <div class="col-xs-6 col-md-4">
+        <a href="{{ product.get_absolute_url }}" class="thumbnail">
+        <img src="{% if product.image %}
+                  {{ product.image.url }}
+                  {% else %}
+                  {% static 'image/no_product_image.jpg' %}
+                  {% endif %}"
+                  style="width: 180px; height: 171px;">
+        </a>
+        <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+        <p>by {{product.user.username}}</p>
+        <h4 style="color:#AA0000;">$ {{ product.price }}</h4>
+    </div>
+    {% empty %}
+        <h3>No result</h3>
+    {% endfor %}
+</div>
+{% endblock %}

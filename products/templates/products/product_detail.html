@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block content %}
+<a href="{% url 'products:product_list' username=product.user %}">←Back To List</a>
+    {% if user.is_authenticated and product.user == request.user %}
+       <a class="btn btn-primary" href="{% url 'products:update_product' username=user.username slug=product.slug %}">EDIT</a>
+       <a class="btn btn-danger" href="{% url 'products:delete_product' username=user.username slug=product.slug %}">Delete</a><br><br>
+<br><br>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <a href="#" class="thumbnail">
+            <img src="{% if product.image %}
+                      {{ product.image.url }}
+                      {% else %}
+                      {% static 'image/no_product_image.jpg' %}
+                      {% endif %}" >
+            </a>
+        </div>
+        <div class="col-md-6">
+            <h2>{{ product.title }}</h2>
+
+            <p>by <a href="{% url 'products:product_list' username=product.user.username %}">{{ product.user.username }}</a></p>
+
+            <div style="color:#FFC408">
+                {% for star in product.star_rating_list %}
+                    {% if star == 'on' %}
+                    <span class="fas fa-star"></span>
+                    {% else %}
+                    <span class="far fa-star"></span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <hr>
+
+            <h4 style="color:#AA0000;"><strong>Price: ${{ product.price }}</strong></h4>
+
+            {% if product.in_stock %}
+            <h5><strong>Quantity: {{ product.quantity }}</strong></h5>
+            {% else %}
+            <h5>Out of stock</h5>
+            {% endif %}
+
+        </div>
+        <div class="col-md-3">
+            {% if product.user != request.user %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if product.in_stock %}
+                    <form name="add_to_cart" action="{% url 'carts:add' product_id=product.id %}" method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        {% buttons %}
+                            <button type="submit" class="btn btn-warning btn-product">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Add to cart
+                            </button>
+                        {% endbuttons %}
+                    </form>
+                    {% else %}
+                    <p style="color:#AA0000;">The Product is out of stock</p>
+                    {% endif %}
+                    <hr>
+                    <a href="{% url 'wish:add' product_id=product.id %}" class="btn btn-default">Add to Wish list</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+
+    </div>
+    <hr>
+    <h2>Description:</h2>
+    <h3>{{ product.description }}</h3>
+    <hr>
+    {% block comments %}
+    {% if user.is_authenticated and product.user != request.user %}
+    <a href="{% url 'comments:new_comment' product_id=product.id %}">Add comment</a>
+    {% endif %}
+    {% endblock %}
+
+
+    <h2>Comments:</h2>
+    {% for comment in comment_list %}
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>{{ comment.title }}</strong></div>
+          <div class="panel-body">
+              <p>by {{ comment.user }}</p>
+              <div style="color:orange">
+                  {% for star in comment.star_rating_list %}
+                        {% if star == 'on' %}
+                        <span class="fas fa-star"></span>
+                        {% else %}
+                        <span class="far fa-star"></span>
+                        {% endif %}
+                  {% endfor %}
+              </div>
+              <p>{{ comment.created }}</p>
+              <p>{{ comment.content }}</p>
+            {% if user.is_authenticated and comment.user == request.user %}
+            <a href="{% url 'comments:edit' id=comment.id %}" class="btn btn-default">edit</a>
+            <a href="{% url 'comments:remove' id=comment.id %}" class="btn btn-danger">remove</a>
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+    <hr>
+
+{% endblock %}

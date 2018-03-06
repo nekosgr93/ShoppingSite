@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<h3>Add Comment</h3>
+<form method="POST">
+    <div class="starbox" style="color:#FFC408">
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+    </div>
+    <br>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="star_rating" id="star_rating" value=0>
+    <input type="submit" value="Submit" name="add_comment">
+</form>
+{% endblock %}

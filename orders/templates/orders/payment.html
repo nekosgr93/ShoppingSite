@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Choose Payment</h1>
+<form action="{% url 'orders:payment' %}" method="POST">
+    {% csrf_token %}
+    <h2>Default Paid</h2>
+    <input type="submit" value="choose this payment">
+</form>
+{% endblock %}

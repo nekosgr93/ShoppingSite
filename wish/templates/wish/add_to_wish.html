@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% block content %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">Add to list</div>
+  <div class="panel-body">
+      <h3><strong>The product has add to your wish list!</strong></h3>
+      <br>
+    <table class="col-md-9">
+        <tr>
+            <td class="col-md-2">
+                <div class="media">
+                    <a class="thumbnail pull-left" href="{{ product.get_absolute_url }}">
+                        <img src="{% if product.image %}
+                        {{ product.image.url }}
+                        {% else %}
+                        {% static 'image/no_product_image.jpg' %}
+                        {% endif %}"
+                        style="width: 108px; height: 108px;">
+                    </a><br>
+                </div>
+            </td>
+            <td class="col-md-9">
+                <div class="media-title" style="text-align: left;">
+                    <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+                    <p>$ {{ product.price }}</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
