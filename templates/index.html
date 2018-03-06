@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>This is a shopping page</h1>
-    {% for user in user %}
+    {% for user in product_user %}
     <a href="{% url 'products:product_list'  username=user.username %}">{{ user.username }} Products</a><br>
     {% endfor %}
 {% endblock %}
