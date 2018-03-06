@@ -6,6 +6,7 @@ DATABASES = {
 }
 
 # Static asset configuration.
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
