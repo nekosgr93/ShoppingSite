@@ -15,7 +15,11 @@ class Index(TemplateView):
     template_name = "index.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["product_user"] = User.objects.all()
+        users = User.objects.all()
+        product_list = []
+        for user in users:
+            product_list.extend(Product.objects.filter(user=user))
+        context['products'] = product_list
         return context
 
 def product_query(request):

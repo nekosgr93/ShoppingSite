@@ -51,11 +51,11 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if product.in_stock %}
-                    <form name="add_to_cart" action="{% url 'carts:add' product_id=product.id %}" method="POST">
+                    <form action="{% url 'carts:add' product_id=product.id %}" method="POST">
                         {% csrf_token %}
                         {% bootstrap_form form %}
                         {% buttons %}
-                            <button type="submit" class="btn btn-warning btn-product">
+                            <button type="submit" class="btn btn-warning btn-product" name="add_to_cart">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Add to cart
                             </button>
                         {% endbuttons %}
