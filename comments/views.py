@@ -1,14 +1,11 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
-from products.models import Product
-from django.views.decorators.http import require_POST
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 from .forms import Comment_form
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views import generic
-from braces.views import SelectRelatedMixin
 from .models import Comments
-# Create your views here.
+from products.models import Product
+
 
 @login_required
 def comment(request, product_id):
@@ -31,6 +28,7 @@ def comment(request, product_id):
     return render(request, 'comments/comments_form.html', {'form': comment_form})
 
 
+@login_required
 def edit_comment(request, id):
     comment = get_object_or_404(Comments, id=id)
     product = comment.product
@@ -51,11 +49,3 @@ def remove_comment_confirm(request, id):
         comment.delete()
         return redirect('products:product_detail', username=product.user.username, slug=product.slug)
     return render(request, 'comments/remove_confirm.html', {'comment': comment})
-
-
-
-
-# def comment_list(request, product_id):
-#     product = Product.objects.get(id=product_id)
-#     list = product.comment.all()
-#     return render(request, 'comments/comment_list.html', {'list': list})

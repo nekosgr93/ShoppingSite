@@ -1,5 +1,4 @@
 from django import forms
-from products.models import Product
 
 
 class Product_Add_Form(forms.Form):
@@ -9,4 +8,3 @@ class Product_Add_Form(forms.Form):
         self.fields['quantity'] = forms.TypedChoiceField(
                                   choices=self.quantity_chioce,
                                   coerce=int)
-

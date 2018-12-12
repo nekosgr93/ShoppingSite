@@ -1,10 +1,8 @@
 from .models import Cart, CartItem
-from django.contrib.auth.models import User
-from django.shortcuts import Http404
-from django.core.exceptions import MultipleObjectsReturned
 from decimal import Decimal
 from products.models import Product
 from django.contrib import messages
+
 
 class Anon_User_Cart(object):
     def __init__(self, request):
@@ -24,8 +22,7 @@ class Anon_User_Cart(object):
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': quantity,
                                      'price': str(product.price),
-                                     }
-
+                                    }
         else:
             self.add_to_update(product, quantity)
         self.save()
@@ -128,88 +125,3 @@ class Auth_User_Cart(object):
            set it to inactivate"""
         self.cart.activate = False
         self.cart.save()
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def create_anon_user_cart(request):
-#     anon_cart_id = request.session.session_key
-#     cart = Cart(session=anon_cart_id)
-#     cart.save()
-#     request.session['anon_cart_id'] = anon_cart_id
-#     request.session['carry_over_cart'] = True
-#     return cart
-
-
-# def retrieve_anon_user_cart(request):
-#     anon_cart_id = request.session.get('anon_cart_id')
-#     cart = Cart.objects.get(session=anon_cart_id)
-#     return cart
-
-
-# def assign_anon_cart_to_user(request):
-#     try:
-#         anon_cart_id = request.session.get('anon_cart_id')
-#         cart = Cart.objects.get(session=anon_cart_id)
-#         if cart.user is None and request.user.is_authenticated() and request.session.get('carry_over_cart'):
-#             user = User.objects.get(username=request.user)
-#             cart.user = user
-#             del request.session['anon_cart_id']
-#             del request.session['carry_over_cart']
-#             cart.save()
-#     except KeyError:
-#         raise Http404
-#     return cart
-#
-#
-# def create_auth_user_cart(request):
-#     cart = Cart(session=request.session.session_key)
-#     user = User.objects.get(username=request.user)
-#     cart.user = user
-#     cart.save()
-#     return cart
-#
-#
-# def retrieve_auth_user_cart(request):
-#     cart = Cart.objects.get(user=request.user)
-#     return cart
-#
-#
-# def create_or_retrieve_cart(request):
-#     if request.user.is_authenticated():
-#         try:
-#             cart = retrieve_auth_user_cart(request)
-#         except Cart.DoesNotExist:
-#             cart = create_auth_user_cart(request)
-#         except MultipleObjectsReturned:
-#             cart = create_combined_cart(request)
-#
-#     else:
-#         try:
-#             cart = retrieve_anon_user_cart(request)
-#         except Cart.DoesNotExist:
-#             cart = create_anon_user_cart(request)
-#     return cart
-#
-# def create_combined_cart(request):
-#     cart_list = Cart.objects.filter(username=request.user)
-#     for cart in cart_list:
-#         cart.activate = False
-#         cart.save()
-#     new_cart = create_auth_user_cart(request)
-#     for cart in cart_list:
-#         for item in cart.get_cart_items():
-#             item.cart = new_cart
-#             item.save()
-#     new_cart.save()
-#     return new_cart
-

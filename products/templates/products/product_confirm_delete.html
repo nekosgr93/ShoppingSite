@@ -6,7 +6,7 @@
         <form method="POST">
             {% csrf_token %}
             <input type="submit" value="Confirm" class="btn btn-danger">
-            <a href="{% url 'accounts:user_address' username=user.username %}" class="btn btn-simple btn-large btn-default">Cancel</a>
+            <a href="{% url 'products:product_detail' username=user.username %}" class="btn btn-simple btn-large btn-default">Cancel</a>
 
         </form>
 

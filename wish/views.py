@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from carts.forms import Product_Add_Form
 
-# Create your views here.
 
 @login_required
 def add_to_wish_list(request, product_id):
@@ -19,6 +18,7 @@ def add_to_wish_list(request, product_id):
         messages.warning(request, 'You can\'t add the same product!')
     return render(request, 'wish/add_to_wish.html', {'product': product})
 
+
 @login_required
 def wish_list(request):
     user_wish_list = request.user.wish_list.all()
@@ -27,7 +27,6 @@ def wish_list(request):
     for wish in user_wish_list:
         item_list.append(wish.product)
     return render(request, 'wish/wish_list.html', {'wish_list': item_list, 'form': form})
-
 
 
 def delete_wish(request, product_id):

@@ -8,6 +8,7 @@ from django.core.validators import MinValueValidator
 
 # Create your models here.
 
+
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
     name, ext = os.path.splitext(base_name)
@@ -19,8 +20,9 @@ def upload_image_path(instance, filename):
     name, ext = get_filename_ext(filename)
     return "products/{username}/{product}/{filename}{ext}".format(username=instance.user.username,
                                                                   product=new_filename,
-                                                                filename=new_filename,
-                                                                ext =ext)
+                                                                  filename=new_filename,
+                                                                  ext =ext)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=80)

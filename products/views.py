@@ -1,23 +1,18 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from . import forms
-from django.views import generic
-from . import models
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from braces.views import SelectRelatedMixin
 from django.core.urlresolvers import reverse_lazy
 from carts.forms import Product_Add_Form
-# Create your views here.
 
-class CreateProduct(LoginRequiredMixin, SelectRelatedMixin, generic.CreateView):
-    model = models.Product
-    login_url = 'accounts/login/'
-    redirect_field_name = 'products/product_detail.html'
-    select_related = ('user',)
+from . import forms
+from .models import Product
+
+
+class CreateProduct(LoginRequiredMixin, CreateView):
     form_class = forms.ProductForm
-    template_name = "products/create_edit_product.html"
+    login_url = 'accounts/login/'
+    template_name = "products/product_form.html"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -25,36 +20,33 @@ class CreateProduct(LoginRequiredMixin, SelectRelatedMixin, generic.CreateView):
         self.object.save()
         return super().form_valid(form)
 
-class UpdateProduct(LoginRequiredMixin, SelectRelatedMixin, generic.UpdateView):
-    model = models.Product
-    login_url = 'accounts/login/'
-    redirect_field_name = 'products/product_detail.html'
-    select_related = ('user',)
+
+class UpdateProduct(LoginRequiredMixin, UpdateView):
     form_class = forms.ProductForm
-    template_name = "products/create_edit_product.html"
-
-
-class DeleteProduct(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
-    model = models.Product
     login_url = 'accounts/login/'
-    select_related = ('user',)
+    template_name = "products/product_form.html"
+
+    def get_object(self, queryset=None):
+        user = self.request.user
+        slug = self.kwargs.get('slug')
+        return get_object_or_404(Product, user=user, slug=slug)
 
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(
-            user__username__iexact=self.kwargs.get("username")
-        )
+class DeleteProduct(LoginRequiredMixin, DeleteView):
+    login_url = 'accounts/login/'
+
+    def get_object(self, queryset=None):
+        user = self.request.user
+        slug = self.kwargs.get('slug')
+        return get_object_or_404(Product, user=user, slug=slug)
 
     def get_success_url(self):
-        return reverse_lazy('products:product_list', kwargs={'username': self.request.user.username})
+        return reverse_lazy('products:product_list', kwargs={'username': self.request.user})
 
 
-class ProductList(SelectRelatedMixin, generic.ListView):
-    model = models.Product
-    select_related = ('user',)
+class ProductList(ListView):
     context_object_name = "product"
-    template_name = "product_list.html"
+    template_name = "products/product_list.html"
 
     def get_queryset(self):
         self.user_product = User.objects.prefetch_related('product').get(username=self.kwargs.get("username"))
@@ -66,24 +58,19 @@ class ProductList(SelectRelatedMixin, generic.ListView):
         return context
 
 
-
-
-class ProductDetail(SelectRelatedMixin, generic.DetailView):
-    model = models.Product
+class ProductDetail(DetailView):
     select_related = ('user',)
     template_name = "products/product_detail.html"
 
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     product = queryset.filter(slug__iexact=self.kwargs.get("slug"))
-    #     print(product)
-    #     return product
-
+    def get_object(self, queryset=None):
+        username = self.kwargs.get('username')
+        user = get_object_or_404(User, username=username)
+        slug = self.kwargs.get('slug')
+        return get_object_or_404(Product, user=user, slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        product = models.Product.objects.get(slug__iexact=self.kwargs.get("slug"))
+        product = self.get_object()
         context["form"] = Product_Add_Form(product.quantity)
         context['comment_list'] = product.comment.all()
         return context

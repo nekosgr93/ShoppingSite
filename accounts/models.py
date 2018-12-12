@@ -1,9 +1,8 @@
-from django.db import models
-from django.contrib.auth.models import User
-import random
 import os
+import random
+from django.db import models
 from django.urls import reverse
-#Create your models here.
+from django.contrib.auth.models import User
 
 
 def get_filename_ext(filepath):
@@ -16,9 +15,8 @@ def upload_image_path(instance, filename):
     new_filename = random.randint(1, 3910209312)
     name, ext = get_filename_ext(filename)
     return "accounts/profile_pics/{username}/{filename}{ext}".format(username=instance.user.username,
-                                                                filename=new_filename,
-                                                                ext = ext)
-
+                                                                     filename=new_filename,
+                                                                     ext=ext)
 
 
 class UserProfiles(models.Model):

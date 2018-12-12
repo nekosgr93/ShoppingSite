@@ -77,8 +77,10 @@
     <h3>{{ product.description }}</h3>
     <hr>
     {% block comments %}
-    {% if user.is_authenticated and product.user != request.user %}
+    {% if user.is_authenticated %}
     <a href="{% url 'comments:new_comment' product_id=product.id %}">Add comment</a>
+    {% else %}
+    <p>Please Log in to add comment</p>
     {% endif %}
     {% endblock %}
 

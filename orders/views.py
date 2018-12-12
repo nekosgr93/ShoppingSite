@@ -1,15 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from carts.cart import Auth_User_Cart
-from django.contrib.auth.models import User
-from accounts.models import UserAddress
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, ListView, DetailView
+
 from .forms import User_address_choice_form, New_shipping_address_form
 from .models import Order
 from .order import Found_address
-from django.views.generic import TemplateView, ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-# Create your views here.
+from carts.cart import Auth_User_Cart
+from accounts.models import UserAddress
 
 
 @login_required
@@ -81,26 +79,23 @@ def checkout(request):
         return redirect("orders:finish_order")
     return render(request, 'orders/checkout.html', {'cart': cart, 'checkout_address': checkout_address})
 
-@login_required
-def order_list(request):
-    user_order_list = Order.objects.filter(user=request.user)
-    print(user_order_list)
-    return render(request, 'orders/order_list.html', {'order_list': user_order_list})
 
-# class Order_list(LoginRequiredMixin, ListView):
-#     model = Order
-#     context_object_name = 'order_list'
-#     template_name = 'orders/order_list.html'
-#
-#     def get_queryset(self):
-#         order = Order.objects.filter(user=self.kwargs.get('username'))
-#         print(order)
-#         return order
+class OrderList(LoginRequiredMixin, ListView):
+    context_object_name = 'order_list'
+    template_name = 'orders/order_list.html'
 
-@login_required
-def order_detail(request, pk):
-    user_order_detail = get_object_or_404(Order, id=pk, user=request.user)
-    return render(request, 'orders/order_detail.html', {'order': user_order_detail})
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+
+class OrderDetail(LoginRequiredMixin, DetailView):
+    context_object_name = 'order'
+    template_name = 'orders/order_detail.html'
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get('pk')
+        return Order.objects.get(user=self.request.user, pk=pk)
+
 
 class Finish_Page(TemplateView):
     template_name = 'orders/finish_page.html'

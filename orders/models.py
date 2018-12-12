@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from carts.models import Cart, CartItem
 from accounts.models import UserAddress
+
+from carts.models import Cart
 # Create your models here.
 
 

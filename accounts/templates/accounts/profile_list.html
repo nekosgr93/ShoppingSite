@@ -5,9 +5,9 @@
 
 <div class="row">
     <div class="col-xs-6 col-md-3">
-{% if profiles.profile_pic %}
+{% if object.profile_pic %}
         <a href="#" class="thumbnail">
-        <img src="{{ profiles.profile_pic.url }}" alt="No Photo">
+        <img src="{{ object.profile_pic.url }}" alt="No Photo">
         </a>
 {% else %}
         <a href="#" class="thumbnail">
@@ -17,10 +17,10 @@
 {% endif %}
     </div>
     <div class="col-xs-6 col-md-9">
-          <h1>{{ profiles.user.username }}'s Profiles</h1><br>
+          <h1>{{ object.user.username }}'s Profiles</h1><br>
           <h3><strong>Bio</strong></h3>
-            <p>{{ profiles.bio }}</p>
-          {% if user.is_authenticated and profiles.user == request.user %}
+            <p>{{ object.bio }}</p>
+          {% if user.is_authenticated and object.user == request.user %}
                <a class="btn btn-primary" href="{% url 'accounts:profile_edit' username=user.username %}">EDIT</a><br><br>
           {% endif %}
     </div>

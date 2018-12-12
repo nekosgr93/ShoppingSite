@@ -1,10 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from products.models import Product
-from django.db.models.signals import post_save
-from django.core.validators import MinValueValidator
-
-# Create your models here.
 
 
 class Cart(models.Model):
@@ -30,6 +26,7 @@ class Cart(models.Model):
             item.reduce()
         self.activate = False
         self.save()
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cartitem')
