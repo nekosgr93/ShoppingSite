@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'comments',
-    'wish'
+    'wish',
+    'paypal.standard.ipn'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = "/welcome/"
 LOGOUT_REDIRECT_URL = "/"
+
+PAYPAL_REVEIVER_EMAIL = 'zerofoxy05-facilitator@gmail.com'
+PAYPAL_TEST = True

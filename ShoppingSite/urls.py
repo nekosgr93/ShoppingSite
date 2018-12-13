@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^orders/', include('orders.urls', namespace='orders')),
     url(r'^comments/', include('comments.urls', namespace='comments')),
     url(r'^wish/', include('wish.urls', namespace='wish')),
+    url(r'^paypal/', include('paypal.standard.ipn.urls'))
 ]
 
 

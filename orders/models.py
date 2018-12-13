@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from accounts.models import UserAddress
 
 from carts.models import Cart
 # Create your models here.
@@ -15,7 +14,6 @@ class Order(models.Model):
                ('Taiwan', 'Taiwan')]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='order')
-    address = models.ForeignKey(UserAddress, on_delete=models.CASCADE, related_name='order', null=True, blank=False)
     shipping_full_name = models.CharField(max_length=100, default='', null=True)
     shipping_postal_code = models.CharField(max_length=16, default='', null=True)
     shipping_country = models.CharField(max_length=50, choices=COUNTRY, null=True)

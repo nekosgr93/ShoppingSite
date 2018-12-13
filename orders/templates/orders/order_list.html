@@ -12,6 +12,7 @@
                         <td>Total:</td>
                         <td>Shipping to:</td>
                         <td>Order number: ########</td>
+                        <td>Paid: </td>
                     </tr>
                     <tr>
                         <td>{{ order.created }}</td>
@@ -21,7 +22,13 @@
                             {% else %}
                             {{ order.shipping_full_name }}
                             {% endif %}</td>
-                        <td><a href="#">Detail</a></td>
+                        <td>
+                            {% if order.paid %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                            {% else %}
+                            <span class="glyphicon glyphicon-remove"></span>
+                            {% endif %}
+                        </td>
                     </tr>
                 </thead>
             </table>

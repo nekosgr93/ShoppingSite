@@ -22,7 +22,7 @@ def add_to_cart(request, product_id):
         quantity = int(request.POST.get('quantity'))
         if request.user.is_authenticated():
             cart = Auth_User_Cart(request)
-            cart.add(product, quantity)
+            cart.add_or_update(product, quantity)
         else:
             cart = Anon_User_Cart(request)
             cart.add(product, quantity)

@@ -1,8 +1,9 @@
 from django.views.generic import TemplateView
 from django.utils.text import slugify
-from products.models import Product
 from django.shortcuts import render
 from django.contrib.auth.models import User
+
+from products.models import Product
 
 
 class Welcome(TemplateView):

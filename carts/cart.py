@@ -1,7 +1,9 @@
-from .models import Cart, CartItem
 from decimal import Decimal
-from products.models import Product
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+
+from .models import Cart, CartItem
+from products.models import Product
 
 
 class Anon_User_Cart(object):
@@ -20,9 +22,10 @@ class Anon_User_Cart(object):
         product_id = str(product.id)
         product = Product.objects.get(id=product_id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': quantity,
-                                     'price': str(product.price),
-                                    }
+            self.cart[product_id] = {
+                'quantity': quantity,
+                'price': str(product.price)
+            }
         else:
             self.add_to_update(product, quantity)
         self.save()
@@ -60,31 +63,27 @@ class Auth_User_Cart(object):
         try:
             self.cart = Cart.objects.get(user=request.user, activate=True)
             self.combine_the_anon_cart(request)
-        except Cart.DoesNotExist:
+        except ObjectDoesNotExist:
             self.cart = Cart()
             self.cart.user = request.user
             self.cart.save()
             self.combine_the_anon_cart(request)
             self.get_cart_item = self.get_cart_item()
 
-    def add(self, product, quantity):
-        exist_check = CartItem.objects.filter(product=product)
-        if not exist_check:
-            if product.user != self.cart.user:
-                item = CartItem()
-                item.cart = self.cart
-                item.product = product
-                item.price = product.price
-                item.quantity = quantity
-                item.save()
-                self.cart.calculate_total()
+    def add_or_update(self, product, quantity):
+        try:
+            item = CartItem.objects.get(cart=self.cart, product=product)
+        except ObjectDoesNotExist:
+            item = CartItem(
+                cart=self.cart,
+                product=product,
+                price=product.price,
+                quantity=quantity
+            )
+            item.save()
         else:
-            self.add_to_update(product, quantity)
-
-    def add_to_update(self, product, quantity):
-        item = CartItem.objects.get(cart=self.cart, product=product)
-        item.quantity += quantity
-        item.save()
+            item.quantity += quantity
+            item.save()
         self.cart.calculate_total()
 
     def combine_the_anon_cart(self, request):
