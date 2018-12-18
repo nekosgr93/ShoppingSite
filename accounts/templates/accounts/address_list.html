@@ -1,32 +1,35 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'accounts/address.css' %}">
+{% endblock style %}
+
 {% block content %}
 <div class="jumbotron">
-<h2>Address</h2>
-<div class="row">
-    <ul class="list-group">
-        {% if user.is_authenticated and address_user == request.user %}
-        <div class="col-xs-6 col-md-4">
-            <li class="list-group-item">
-                <a href="{% url 'accounts:create_address' username=user.username %}"><h2>+Add</h2></a><br><br>
-            </li>
-        </div>
-        {% endif %}
-            {% for address in object_list %}
-                <div class="col-xs-6 col-md-4">
-                <li class="list-group-item">
-                    <h4 class="list-group-item-heading">{{ address.address }}</h4>
-                    <p class="list-group-item-text">Phone number: {{ address.phone_number }}</p>
-                    {% if user.is_authenticated and address_user == request.user %}
-                    <a class="btn btn-default" href="{% url 'accounts:update_address' username=user.username pk=address.pk %}">EDIT</a>
-                    <a class="btn btn-danger" href="{% url 'accounts:delete_address' username=user.username pk=address.pk %}">DELETE</a>
-                    {% endif %}
-                </li>
-                </div>
-            {% empty %}
-                <h2>You haven't add any address</h2>
-            {% endfor %}
-    </ul>
+<div class="address_headbar">
+    <h2 id="address_title">Address</h2>
+    {% if user.is_authenticated and address_user == request.user %}
+        <a id="address_add" class="btn btn-default" href="{% url 'accounts:create_address' username=user.username %}">Add</a>
+    {% endif %}
 </div>
+<ul class="list-group">
+    {% for address in object_list %}
+        <li class="list-group-item">
+            <h4 class="list-group-item-heading">{{ address.country }}</h4>
+            <h4 class="list-group-item-heading">{{ address.postal_code }}</h4>
+            <h4 class="list-group-item-heading">{{ address.address1 }}</h4>
+            <h4 class="list-group-item-heading">{{ address.address2 }}</h4>
+            <p class="list-group-item-text">Phone number: {{ address.phone_number }}</p>
+            {% if user.is_authenticated and address_user == request.user %}
+            <a class="btn btn-default" href="{% url 'accounts:update_address' username=user.username pk=address.pk %}">EDIT</a>
+            <a class="btn btn-danger" href="{% url 'accounts:delete_address' username=user.username pk=address.pk %}">DELETE</a>
+            {% endif %}
+        </li>
+    {% empty %}
+        <h2>You haven't add any address</h2>
+    {% endfor %}
+</ul>
 
 
 </div>

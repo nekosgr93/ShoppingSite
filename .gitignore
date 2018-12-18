@@ -1,3 +1,9 @@
 /.idea/
 .venv
 .vscode
+SHOPPING\ DEPLOY-*.json
+SECRET_KEY.txt
+cloud_sql_proxy_x64.exe
+staticfiles
+media
+*/__pycache__/

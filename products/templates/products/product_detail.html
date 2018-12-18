@@ -2,6 +2,10 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/star_rating.css' %}">
+{% endblock style %}
+
 {% block content %}
 <a href="{% url 'products:product_list' username=product.user %}">←Back To List</a>
     {% if user.is_authenticated and product.user == request.user %}

@@ -1,13 +1,34 @@
 # ShoppingSite
-用Django土法煉鋼出來的購物網站
+練習Django而製作的電商網站  
+本來發佈在Heroku上，不過不知道為什麼最近好像掛了所以想說搬去GCP看看  
+順便練習一下怎麼用Google Cloud Storage當上傳空間  
+local測試用superuser:
+   - **username**: nekosgr
+   - **password**: testpassword
 
-成品請參考 → https://django-shopping-site.herokuapp.com/
+# 作品連結
+https://shopping-deploy.appspot.com/
 
-superuser
-帳號: nekosgr
-密碼: testpassword
+內建帳號  
+1. customer:
+   - **username**: customer
+   - **password**: testbuying
+可以用以上的帳號進行測試
 
-不過Heroku因為沒有上傳檔案的功能所以所有的圖片上傳算是殘廢了:P
+# Screenshots
+![](https://github.com/nekosgr93/ShoppingSite/blob/master/Screenshots/shot1.jpg)
+![](https://github.com/nekosgr93/ShoppingSite/blob/master/Screenshots/shot2.jpg)
+![](https://github.com/nekosgr93/ShoppingSite/blob/master/Screenshots/shot3.jpg)
 
-目前還沒有做完支付部分
-然後大概會有很多小bug
+# 執行環境
+- Python 3.6
+
+# Tech/Framework Use
+- Django
+- paypal api
+- bootstrap
+
+# TODO
+- Change the cart from databse to session base
+- Use redis
+- Learn CSS to make the website looks better

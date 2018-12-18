@@ -1,0 +1,6 @@
+.venv
+.vscode
+cloud_sql_proxy_x64.exe
+staticfiles
+.git
+Screenshots

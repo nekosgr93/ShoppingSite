@@ -7,12 +7,13 @@ verify_ssl = true
 flake8 = "*"
 
 [packages]
-django-bootstrap3 = "==9.1.0"
-gunicorn = "==19.7.1"
-whitenoise = "==3.3.1"
-Pillow = "==4.3.0"
 django = "~=1.11.16"
 django-paypal = "*"
+django-storages = {extras = ["google"],version = "*"}
+gunicorn = "*"
+django-bootstrap3 = "*"
+pillow = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.6"
